@@ -1,9 +1,13 @@
 import face_recognition
 import cv2
 import numpy as np
+<<<<<<< HEAD
+from matplotlib import pyplot as plt
+=======
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing import image
+>>>>>>> 92507baee5401e84f271fa49e877ae27b58c4825
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -14,8 +18,12 @@ face_encodings = []
 face_names = []
 process_this_frame = True
 
+<<<<<<< HEAD
+cclass_labels = ['angry','happy','neutral','sad','surprise']
+=======
 classifier = load_model('Emotion_little_vgg.h5')
 class_labels = ['angry','happy','neutral','sad','surprise']
+>>>>>>> 92507baee5401e84f271fa49e877ae27b58c4825
 
 
 while True:
@@ -48,6 +56,8 @@ while True:
 
         # Draw a box around the face
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 5)
+<<<<<<< HEAD
+=======
         roi = frame[top:bottom,left:right]
         roi = cv2.resize(roi,(48,48),interpolation=cv2.INTER_AREA)
 
@@ -65,8 +75,10 @@ while True:
         
         
 
+>>>>>>> 92507baee5401e84f271fa49e877ae27b58c4825
     # Display the resulting image
     cv2.imshow('Video', frame)
+    
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
