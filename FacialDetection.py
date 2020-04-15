@@ -16,7 +16,7 @@ process_this_frame = True
 
 classifier =load_model('Emotion_model.h5')
 
-class_labels = ['Angry','Happy','Neutral','Sad','Surprise']
+class_labels = ['Angry','Neutral','Sad','Surprise','Happy']
 
 while True:
     # Grab a single frame of video
