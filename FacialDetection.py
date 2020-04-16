@@ -36,7 +36,7 @@ while True:
        
 
         # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+        cv2.rectangle(frame, (left, top), (right, bottom), (0, 255,0), 2)
         
         roi_gray = gray[top:bottom,left:right]
         roi_gray = cv2.resize(roi_gray,(48,48),interpolation=cv2.INTER_AREA)
@@ -48,9 +48,9 @@ while True:
             preds = classifier.predict(cropped_img)
             label=emotion_dict[int(np.argmax(preds))]
             label_position = (left,top)
-            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),3)
+            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),3)
         else:
-            cv2.putText(frame,'No Face Found',(20,60),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),3)
+            cv2.putText(frame,'No Face Found',(20,60),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),3)
     cv2.imshow('Emotion Detector',frame)
        
 
