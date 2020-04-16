@@ -16,7 +16,7 @@ process_this_frame = True
 
 classifier =load_model('Emotion_model.h5')
 
-class_labels = ['Angry','Neutral','Sad','Surprise','Happy']
+emotion_dict = {0: "Angry",  2: "Happy", 3: "Neutral", 4: "Sad", 5: "Surprised"}
 
 while True:
     # Grab a single frame of video
@@ -42,14 +42,11 @@ while True:
         roi_gray = cv2.resize(roi_gray,(48,48),interpolation=cv2.INTER_AREA)
         # Draw a label with a name below the face
         if np.sum([roi_gray])!=0:
-            roi = roi_gray.astype('float')/255.0
-            roi = img_to_array(roi)
-            roi = np.expand_dims(roi,axis=0)
 
         # make a prediction on the ROI, then lookup the class
-
-            preds = classifier.predict(roi)[0]
-            label=class_labels[preds.argmax()]
+            cropped_img = np.expand_dims(np.expand_dims(roi_gray,-1),0)
+            preds = classifier.predict(cropped_img)
+            label=emotion_dict[int(np.argmax(preds))]
             label_position = (left,top)
             cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),3)
         else:
