@@ -23,6 +23,7 @@ while True:
     ret, frame = video_capture.read()
 
     gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+    (H, W) = frame.shape[:2]
 
     rgb_frame = frame[:, :, ::-1]
 
@@ -46,11 +47,11 @@ while True:
         # make a prediction on the ROI, then lookup the class
             cropped_img = np.expand_dims(np.expand_dims(roi_gray,-1),0)
             preds = classifier.predict(cropped_img)
-            label=emotion_dict[int(np.argmax(preds))]
-            label_position = (left,top)
-            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),3)
+            label="Emotion: "+emotion_dict[int(np.argmax(preds))]  
+            label_position = (left,bottom+25)
+            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
         else:
-            cv2.putText(frame,'No Face Found',(20,60),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),3)
+            cv2.putText(frame,'No Face Found',(10,H),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),3)
     cv2.imshow('Emotion Detector',frame)
        
 
