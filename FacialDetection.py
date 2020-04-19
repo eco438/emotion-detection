@@ -14,8 +14,8 @@ face_locations = []
 face_encodings = []
 
 
-classifier =load_model('Emotion_model.h5')
-emotion_dict = {0: "Angry",  2: "Happy", 3: "Neutral", 4: "Sad", 5: "Surprised"}
+classifier =load_model('Emotions.hdf5')
+emotion_dict = {0: "Angry",  1: "Happy", 2: "Neutral", 3: "Sad", 4: "Surprised"}
 
 while True:
     # Grab a single frame of video
@@ -31,7 +31,7 @@ while True:
     # Loop through each face in this frame of video
     for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
         # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 255,0), 2)
+        
         roi_gray = gray[top:bottom,left:right]
         roi_gray = cv2.resize(roi_gray,(48,48),interpolation=cv2.INTER_AREA)
         # Draw a label with a name below the face
@@ -39,11 +39,28 @@ while True:
         # make a prediction on the ROI, then lookup the class
             cropped_img = np.expand_dims(np.expand_dims(roi_gray,-1),0)
             preds = classifier.predict(cropped_img)
-            label="Emotion: "+emotion_dict[int(np.argmax(preds))]  
+            emotion_text = emotion_dict[np.argmax(preds)]
+            label="Emotion: "+emotion_dict[np.argmax(preds)]  
             label_position = (left,bottom+25)
-            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
-        else:
-            cv2.putText(frame,'No Face Found',(10,H),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),3)
+        
+            emotion_probability = np.max(preds)
+            if emotion_text == 'Angry':
+                color = (0, 0, 255)
+            elif emotion_text == 'Sad':
+                color = (255, 0, 0)
+            elif emotion_text == 'Happy':
+                color = (255, 255, 0)
+            elif emotion_text == 'Surprise':
+                color = (0, 255, 255)
+            else:
+                color = (0, 255, 0)
+
+            
+        
+            cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
+            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,color,3)
+    
+            
     cv2.imshow('Emotion Detector',frame)
 
     # Hit 'q' on the keyboard to quit!
