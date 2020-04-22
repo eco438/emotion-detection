@@ -14,8 +14,8 @@ face_locations = []
 face_encodings = []
 
 
-classifier =load_model('Emotions.hdf5')
-emotion_dict = {0: "Angry",  1: "Happy", 2: "Neutral", 3: "Sad", 4: "Surprised"}
+classifier =load_model('extended_Emotions.hdf5')
+emotion_dict = {0: "Angry", 1:"Digust",2:"Fear",3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
 while True:
     # Grab a single frame of video
@@ -54,9 +54,12 @@ while True:
                 color = (0, 255, 255)
             elif emotion_text == 'Neutral':
                 color = (0, 255, 0)
+            else:
+                color = (0,0,255)
 
             cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
             cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,color,3)
+            print(preds)
     
             
     cv2.imshow('Emotion Detector',frame)
