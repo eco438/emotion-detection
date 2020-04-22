@@ -52,11 +52,9 @@ while True:
                 color = (255, 255, 0)
             elif emotion_text == 'Surprise':
                 color = (0, 255, 255)
-            else:
+            elif emotion_text == 'Neutral':
                 color = (0, 255, 0)
 
-            
-        
             cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
             cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,color,3)
     
