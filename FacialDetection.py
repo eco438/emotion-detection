@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array
+import matplotlib.pyplot as plt
 # Get a reference to webcam #0 (the default one)
 
 
@@ -13,8 +14,8 @@ video_capture = cv2.VideoCapture(0)
 face_locations = []
 face_encodings = []
 
-
-classifier =load_model('extended_Emotions.hdf5')
+#loads the model
+classifier =load_model('Emotions02.hdf5')
 emotion_dict = {0: "Angry", 1:"Digust",2:"Fear",3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
 while True:
@@ -42,8 +43,11 @@ while True:
             emotion_text = emotion_dict[np.argmax(preds)]
             label="Emotion: "+emotion_dict[np.argmax(preds)]  
             label_position = (left,bottom+25)
-        
+
+            # stores the value of the prediction in a variable
             emotion_probability = np.max(preds)
+
+            #Makes the color of bounding box and text to a color to represent the emotion
             if emotion_text == 'Angry':
                 color = (0, 0, 255)
             elif emotion_text == 'Sad':
@@ -59,9 +63,10 @@ while True:
             else:
                 color = (125,0,125)
 
+            #Draws a bounding box and places text of the emotion at top left
             cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
             cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,color,3)
-            print(preds)
+            
     
             
     cv2.imshow('Emotion Detector',frame)
